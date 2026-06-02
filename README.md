@@ -2,6 +2,17 @@
 
 A machine learning web application that predicts whether a telecom customer will churn, built as part of the Code Institute Diploma in Full Stack Software Development (Predictive Analytics).
 
+## Table of Contents
+1. [Dataset Content](#dataset-content)
+2. [Business Requirements](#business-requirements)
+3. [Hypothesis and Validation](#hypothesis-and-validation)
+4. [Rationale to Map Business Requirements to Data Visualisations and ML Tasks](#rationale-to-map-business-requirements-to-data-visualisations-and-ml-tasks)
+5. [ML Business Case](#ml-business-case)
+6. [Dashboard Design](#dashboard-design)
+7. [Deployment](#deployment)
+8. [Main Libraries Used](#main-libraries-used)
+9. [Credits](#credits)
+
 ---
 
 ## Dataset Content
