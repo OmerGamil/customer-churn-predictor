@@ -9,3 +9,4 @@ joblib==1.4.2
 feature-engine==1.8.1
 imbalanced-learn==0.12.3
 Pillow==10.3.0
+ipykernel==6.29.4
