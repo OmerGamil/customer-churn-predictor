@@ -1,7 +1,15 @@
+"""
+page_summary.py — Streamlit page: Project Summary.
+
+Displays the dataset overview, business requirements, and links
+to the project README for the Customer Churn Predictor dashboard.
+"""
+
 import streamlit as st
 
 
 def page_summary_body():
+    """Render the Project Summary page content."""
     st.write("## Customer Churn Prediction")
 
     st.info(

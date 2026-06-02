@@ -1,3 +1,11 @@
+"""
+page_churn_predictor.py — Streamlit page: Churn Predictor.
+
+Provides an interactive form for entering customer attributes and
+predicts churn probability using the saved ML pipeline and optimal threshold.
+Addresses Business Requirement 2 of the Customer Churn Predictor project.
+"""
+
 import streamlit as st
 import pandas as pd
 from src.data_management import load_pkl_file
@@ -8,6 +16,7 @@ PIPELINE_PATH = "outputs/ml_pipeline/predict_churn/v1/clf_pipeline.pkl"
 
 
 def page_churn_predictor_body():
+    """Render the Churn Predictor page with an input form and prediction output."""
     st.write("## Churn Predictor")
     st.info(
         "Enter customer details below and click **Predict** to find out whether "
@@ -17,7 +26,7 @@ def page_churn_predictor_body():
     st.write("---")
     st.write("### Customer Details")
 
-    col1, col2, col3 = st.beta_columns(3)
+    col1, col2, col3 = st.columns(3)
 
     with col1:
         gender = st.selectbox("Gender", options=["Male", "Female"])

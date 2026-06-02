@@ -1,3 +1,11 @@
+"""
+predictive_analysis.py — Live prediction helper for the churn dashboard.
+
+Loads the saved optimal threshold and applies it to the fitted pipeline's
+predict_proba output so the decision boundary matches what was tuned
+during training.
+"""
+
 import joblib
 import os
 

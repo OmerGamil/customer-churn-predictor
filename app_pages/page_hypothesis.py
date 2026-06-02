@@ -1,7 +1,15 @@
+"""
+page_hypothesis.py — Streamlit page: Project Hypothesis and Validation.
+
+States the three project hypotheses (contract type, monthly charges,
+and tenure) and confirms each against findings from the EDA notebook.
+"""
+
 import streamlit as st
 
 
 def page_hypothesis_body():
+    """Render the Project Hypothesis and Validation page content."""
     st.write("## Project Hypothesis and Validation")
 
     st.write("---")

@@ -1,3 +1,10 @@
+"""
+page_eda.py — Streamlit page: EDA & Correlation Study.
+
+Displays exploratory data analysis plots and interpretations that
+address Business Requirement 1 (identify attributes correlated with churn).
+"""
+
 import streamlit as st
 import os
 from PIL import Image
@@ -7,6 +14,7 @@ EDA_DIR = "outputs/eda"
 
 
 def page_eda_body():
+    """Render the EDA & Correlation Study page content."""
     st.write("## Customer Churn Correlation Study")
 
     st.info(
@@ -80,6 +88,12 @@ def page_eda_body():
 
 
 def _display_plot(filename, interpretation):
+    """Load and display a saved EDA plot with a text interpretation below it.
+
+    Args:
+        filename (str): Image filename inside EDA_DIR.
+        interpretation (str): Text displayed beneath the plot.
+    """
     path = os.path.join(EDA_DIR, filename)
     if os.path.exists(path):
         image = Image.open(path)

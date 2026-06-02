@@ -1,3 +1,11 @@
+"""
+page_model_performance.py — Streamlit page: ML Model Performance.
+
+Shows the trained pipeline configuration, precision-recall trade-off chart,
+confusion matrix, classification report, and business requirement outcome
+for the Customer Churn Predictor model.
+"""
+
 import streamlit as st
 import os
 import joblib
@@ -9,6 +17,7 @@ PIPELINE_DIR = "outputs/ml_pipeline/predict_churn/v1"
 
 
 def page_model_performance_body():
+    """Render the Model Performance page content."""
     st.write("## ML Model Performance")
 
     st.info(
