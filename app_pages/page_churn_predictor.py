@@ -101,6 +101,9 @@ def page_churn_predictor_body():
             }
         )
 
+        st.write("#### Customer Profile Submitted")
+        st.dataframe(X_live.T.rename(columns={0: "Value"}))
+
         try:
             pipeline = load_pkl_file(PIPELINE_PATH)
             prediction_label = predict_churn(X_live, pipeline)
