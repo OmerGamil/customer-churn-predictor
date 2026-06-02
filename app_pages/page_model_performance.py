@@ -1,6 +1,5 @@
 import streamlit as st
 import os
-import joblib
 import pandas as pd
 from PIL import Image
 
@@ -59,9 +58,32 @@ def page_model_performance_body():
 
     st.write("---")
     st.write("### Business Requirement Outcome")
-    st.success(
-        "**Target**: Recall ≥ 75% on the Churn class (label = 1). \n\n"
-        "Please run Notebook 04_ModellingEvaluation.ipynb to train the model and "
-        "confirm whether this target was met. The result will be displayed here "
-        "once the pipeline and report files are generated."
-    )
+
+    report_path = os.path.join(PIPELINE_DIR, "classification_report.csv")
+    if os.path.exists(report_path):
+        report_df = pd.read_csv(report_path, index_col=0)
+        if "Churn" in report_df.index:
+            churn_recall = report_df.loc["Churn", "recall"]
+            target = 0.75
+            if churn_recall >= target:
+                st.success(
+                    f"**Business Requirement MET** \n\n"
+                    f"The model achieved **{churn_recall*100:.1f}% recall** on the "
+                    f"Churn class, exceeding the ≥75% target. The pipeline is "
+                    f"suitable for deployment."
+                )
+            else:
+                st.error(
+                    f"**Business Requirement NOT MET** \n\n"
+                    f"The model achieved **{churn_recall*100:.1f}% recall** on the "
+                    f"Churn class, which is below the ≥75% target. Consider "
+                    f"adjusting the decision threshold or trying a different model."
+                )
+        else:
+            st.warning("Could not find 'Churn' row in classification report.")
+    else:
+        st.warning(
+            "Run Notebook 04_ModellingEvaluation.ipynb to train the model. "
+            "The business requirement outcome will be displayed here automatically "
+            "once the classification report is generated."
+        )
