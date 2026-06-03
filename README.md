@@ -278,8 +278,8 @@ Open each notebook and select the correct Python kernel (`.venv` or the active e
 | `01_DataCollection.ipynb` | Load and inspect the raw data | `telco_churn_raw.csv` |
 | `02_DataCleaning.ipynb` | Clean and encode the data | `telco_churn_cleaned.csv` |
 | `03_EDA.ipynb` | Generate all EDA plots | PNG files in `outputs/eda/` |
-| `04_ModellingEvaluation.ipynb` | Train model and evaluate | `clf_pipeline.pkl`, `optimal_threshold.pkl`, evaluation artefacts |
-| `05_FeatureEngineering.ipynb` | Assess feature transformations | Documents transformation choices |
+| `04_FeatureEngineering.ipynb` | Assess feature transformations | Documents transformation decisions |
+| `05_ModellingEvaluation.ipynb` | Train model and evaluate | `clf_pipeline.pkl`, `optimal_threshold.pkl`, evaluation artefacts |
 
 ### Step 5 — Launch the Streamlit dashboard
 
