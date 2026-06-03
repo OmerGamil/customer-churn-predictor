@@ -5,7 +5,7 @@ outputs/datasets/**/*.csv
 __pycache__/
 *.py[cod]
 *.pyo
-.env
+.venv/
 *.egg-info/
 dist/
 build/
