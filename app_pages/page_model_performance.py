@@ -1,9 +1,10 @@
 """
 page_model_performance.py — Streamlit page: ML Model Performance.
 
-Shows the trained pipeline configuration, precision-recall trade-off chart,
-confusion matrix, classification report, feature importance chart, and the
-business requirement outcome for the Customer Churn Predictor model.
+Shows the trained pipeline configuration, precision-recall trade-off
+chart, confusion matrix, classification report, feature importance
+chart, and the business requirement outcome for the Customer Churn
+Predictor model.
 """
 
 import streamlit as st
@@ -22,9 +23,9 @@ def page_model_performance_body():
     st.write("## ML Model Performance")
 
     st.info(
-        "**Business Requirement 2**: The client wants to predict whether a given "
-        "customer will churn. The success metric is **≥75% recall** on the "
-        "Churn class (label = 1)."
+        "**Business Requirement 2**: The client wants to predict whether "
+        "a given customer will churn. The success metric is "
+        "**≥75% recall** on the Churn class (label = 1)."
     )
 
     # --- Pipeline overview ---
@@ -35,15 +36,14 @@ def page_model_performance_body():
         "1. **Feature Engineering** (`ColumnTransformer`)\n"
         "   - `OneHotEncoder(drop='first')` for categorical features\n"
         "   - `StandardScaler` for numeric features\n"
-        "2. **Oversampling** — `SMOTE` applied only within the training set to address "
-        "the ~26.5% class imbalance. Applied after encoding so synthetic samples are "
-        "generated in the transformed feature space.\n"
-        "3. **Classifier** — `GradientBoostingClassifier`, tuned via `GridSearchCV` "
-        "(5-fold cross-validation, scoring = recall) across 6 hyperparameters × 3 "
-        "values each.\n\n"
-        "After training, the **decision threshold** is tuned on the validation set "
-        "using the precision-recall curve to find the highest threshold that still "
-        "meets ≥75% recall."
+        "2. **Oversampling** — `SMOTE` applied only within the "
+        "training set to address the ~26.5% class imbalance.\n"
+        "3. **Classifier** — `GradientBoostingClassifier`, tuned "
+        "via `GridSearchCV` (5-fold CV, scoring = recall) across 6 "
+        "hyperparameters × 3 values each.\n\n"
+        "After training, the **decision threshold** is tuned on the "
+        "validation set using the precision-recall curve to find the "
+        "highest threshold that still meets ≥75% recall."
     )
 
     # Show optimal threshold if saved
@@ -52,7 +52,8 @@ def page_model_performance_body():
         threshold = joblib.load(threshold_path)
         st.write(
             f"**Optimal decision threshold**: `{threshold:.4f}` "
-            f"(lowered from the default 0.5 to increase recall on the Churn class)"
+            "(lowered from the default 0.5 to increase recall on the "
+            "Churn class)"
         )
 
     # --- Precision-Recall trade-off ---
@@ -62,14 +63,18 @@ def page_model_performance_body():
     if os.path.exists(pr_path):
         st.image(Image.open(pr_path))
         st.write(
-            "The chart shows how precision and recall change as the decision threshold "
-            "varies. The green dashed line marks the 75% recall target. "
-            "The optimal threshold is the highest value that still keeps recall at or "
-            "above this target, balancing the need to catch churners while limiting "
+            "The chart shows how precision and recall change as the "
+            "decision threshold varies. The green dashed line marks the "
+            "75% recall target. The optimal threshold is the highest "
+            "value that still keeps recall at or above this target, "
+            "balancing the need to catch churners while limiting "
             "unnecessary retention outreach."
         )
     else:
-        st.warning("Plot not found. Run Notebook 04_ModellingEvaluation.ipynb first.")
+        st.warning(
+            "Plot not found. "
+            "Run Notebook 05_ModellingEvaluation.ipynb first."
+        )
 
     # --- Confusion matrix ---
     st.write("---")
@@ -78,15 +83,19 @@ def page_model_performance_body():
     if os.path.exists(cm_path):
         st.image(Image.open(cm_path))
         st.write(
-            "**True Positives** (churners correctly flagged) are the priority — these "
-            "are the customers the retention team can act on. "
-            "**False Negatives** (missed churners) are the costliest error: the model "
-            "missed them and no retention action was taken. "
-            "**False Positives** (non-churners incorrectly flagged) waste retention "
-            "resources but do not result in lost customers."
+            "**True Positives** (churners correctly flagged) are the "
+            "priority — these are the customers the retention team "
+            "can act on. **False Negatives** (missed churners) are the "
+            "costliest error: the model missed them and no retention "
+            "action was taken. **False Positives** (non-churners "
+            "incorrectly flagged) waste resources but do not result in "
+            "lost customers."
         )
     else:
-        st.warning("Confusion matrix not found. Run Notebook 04_ModellingEvaluation.ipynb first.")
+        st.warning(
+            "Confusion matrix not found. "
+            "Run Notebook 05_ModellingEvaluation.ipynb first."
+        )
 
     # --- Classification report ---
     st.write("---")
@@ -96,14 +105,15 @@ def page_model_performance_body():
         report_df = pd.read_csv(report_path, index_col=0)
         st.dataframe(report_df)
         st.write(
-            "The table shows precision, recall, and F1-score for both classes "
-            "on the held-out test set. The **Recall** column for the Churn row "
-            "is the key metric against the business requirement."
+            "The table shows precision, recall, and F1-score for both "
+            "classes on the held-out test set. The **Recall** column for "
+            "the Churn row is the key metric against the business "
+            "requirement."
         )
     else:
         st.warning(
             "Classification report not found. "
-            "Run Notebook 04_ModellingEvaluation.ipynb first."
+            "Run Notebook 05_ModellingEvaluation.ipynb first."
         )
 
     # --- Feature importance ---
@@ -113,14 +123,18 @@ def page_model_performance_body():
     if os.path.exists(fi_path):
         st.image(Image.open(fi_path))
         st.write(
-            "Feature importance is measured by the mean decrease in impurity (MDI) "
-            "across all 100+ trees in the GradientBoostingClassifier. Higher bars "
-            "indicate features the model relied on most when splitting. "
-            "Contract type (month-to-month), tenure, and MonthlyCharges are typically "
-            "the top drivers — consistent with the EDA findings."
+            "Feature importance is measured by the mean decrease in "
+            "impurity (MDI) across all trees in the "
+            "GradientBoostingClassifier. Higher bars indicate features "
+            "the model relied on most when splitting. Contract type, "
+            "tenure, and MonthlyCharges are typically the top drivers "
+            "— consistent with the EDA findings."
         )
     else:
-        st.warning("Feature importance plot not found. Run Notebook 04_ModellingEvaluation.ipynb first.")
+        st.warning(
+            "Feature importance plot not found. "
+            "Run Notebook 05_ModellingEvaluation.ipynb first."
+        )
 
     # --- Business requirement outcome ---
     st.write("---")
@@ -129,25 +143,28 @@ def page_model_performance_body():
     if os.path.exists(report_path):
         report_df = pd.read_csv(report_path, index_col=0)
         if "Churn" in report_df.index:
-            churn_recall    = report_df.loc["Churn", "recall"]
+            churn_recall = report_df.loc["Churn", "recall"]
             churn_precision = report_df.loc["Churn", "precision"]
             target = 0.75
             if churn_recall >= target:
                 st.success(
                     f"**Business Requirement MET** \n\n"
-                    f"The model achieved **{churn_recall*100:.1f}% recall** and "
-                    f"**{churn_precision*100:.1f}% precision** on the Churn class "
-                    f"on the held-out test set, exceeding the ≥75% recall target. "
-                    f"The pipeline is suitable for deployment."
+                    f"The model achieved "
+                    f"**{churn_recall * 100:.1f}% recall** and "
+                    f"**{churn_precision * 100:.1f}% precision** on the "
+                    f"Churn class on the held-out test set, exceeding "
+                    f"the ≥75% recall target. The pipeline is "
+                    f"suitable for deployment."
                 )
             else:
                 st.error(
                     f"**Business Requirement NOT MET** \n\n"
-                    f"The model achieved **{churn_recall*100:.1f}% recall** on the "
+                    f"The model achieved "
+                    f"**{churn_recall * 100:.1f}% recall** on the "
                     f"Churn class, which is below the ≥75% target."
                 )
     else:
         st.warning(
-            "Run Notebook 04_ModellingEvaluation.ipynb to train the model. "
-            "Results will appear here automatically once complete."
+            "Run Notebook 05_ModellingEvaluation.ipynb to train the "
+            "model. Results will appear here automatically once complete."
         )

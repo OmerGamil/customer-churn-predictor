@@ -5,15 +5,17 @@ A machine learning web application that predicts whether a telecom customer will
 ## Table of Contents
 1. [Dataset Content](#dataset-content)
 2. [Business Requirements](#business-requirements)
-3. [Hypothesis and Validation](#hypothesis-and-validation)
-4. [Rationale to Map Business Requirements to Data Visualisations and ML Tasks](#rationale-to-map-business-requirements-to-data-visualisations-and-ml-tasks)
-5. [ML Business Case](#ml-business-case)
-6. [Dashboard Design](#dashboard-design)
-7. [How to Run the Project](#how-to-run-the-project)
-8. [Deployment](#deployment)
-9. [Known Issues and Fixes](#known-issues-and-fixes)
-10. [Main Libraries Used](#main-libraries-used)
-11. [Credits](#credits)
+3. [Epics and User Stories](#epics-and-user-stories)
+4. [Hypothesis and Validation](#hypothesis-and-validation)
+5. [Rationale to Map Business Requirements to Data Visualisations and ML Tasks](#rationale-to-map-business-requirements-to-data-visualisations-and-ml-tasks)
+6. [ML Business Case](#ml-business-case)
+7. [Dashboard Design](#dashboard-design)
+8. [Testing](#testing)
+9. [How to Run the Project](#how-to-run-the-project)
+10. [Deployment](#deployment)
+11. [Known Issues and Fixes](#known-issues-and-fixes)
+12. [Main Libraries Used](#main-libraries-used)
+13. [Credits](#credits)
 
 ---
 
@@ -39,6 +41,58 @@ The dataset is publicly available and contains no personally identifiable inform
 
 **Business Requirement 2 — Churn Prediction**
 > The client wants to predict whether a given customer will churn, enabling proactive retention action before the customer leaves. The model must achieve **at least 75% recall on the Churn class** to be considered a successful deployment.
+
+---
+
+## Epics and User Stories
+
+The project is broken down into five CRISP-DM epics. Each epic contains user stories that map to specific tasks in the notebooks or dashboard.
+
+### Epic 1 — Information Gathering and Data Collection
+
+**US01** — As a data practitioner, I want to load and inspect the Telco Customer Churn dataset, so that I can understand its structure and data quality before any processing begins.
+- Implemented in `01_DataCollection.ipynb`
+
+### Epic 2 — Data Visualisation, Cleaning, and Preparation
+
+**US02** — As a data practitioner, I want to clean the raw dataset, so that all downstream notebooks and the ML model receive consistent, properly typed data.
+- Implemented in `02_DataCleaning.ipynb`
+
+**US03** — As a business stakeholder, I want to see which customer attributes most strongly correlate with churn, so that the retention team can identify at-risk customer segments and take targeted action. *(Business Requirement 1)*
+- Implemented in `03_EDA.ipynb` and displayed on the **EDA & Correlation Study** dashboard page
+
+**US04** — As a data practitioner, I want to evaluate which transformations best prepare the features for modelling, so that the ML pipeline applies the right encoding and scaling to each column type.
+- Implemented in `04_FeatureEngineering.ipynb`
+
+### Epic 3 — Model Training, Optimisation and Validation
+
+**US05** — As a data practitioner, I want to train a GradientBoosting classification pipeline with SMOTE oversampling, so that the model learns to identify churners despite the class imbalance. *(Business Requirement 2)*
+- Implemented in `05_ModellingEvaluation.ipynb`
+
+**US06** — As a business stakeholder, I want the model to catch at least 75% of customers who will churn, so that the retention team can act before the customer leaves. *(Business Requirement 2)*
+- Decision threshold tuned on validation set in `05_ModellingEvaluation.ipynb`
+
+### Epic 4 — Dashboard Planning, Designing, and Development
+
+**US07** — As a business stakeholder, I want to see a clear summary of the project and its goals on the dashboard, so that I can quickly understand what the app does and what problem it solves.
+- Implemented on **Page 1 — Project Summary**
+
+**US08** — As a business stakeholder, I want to view the EDA plots and their interpretations on the dashboard, so that I can understand which customer attributes drive churn. *(Business Requirement 1)*
+- Implemented on **Page 2 — EDA & Correlation Study**
+
+**US09** — As a retention team member, I want to enter a customer's details and get an instant churn prediction, so that I can take proactive action before the customer leaves. *(Business Requirement 2)*
+- Implemented on **Page 5 — Churn Predictor**
+
+**US10** — As a data practitioner, I want to see the model's performance metrics on the dashboard, so that I can verify the pipeline meets the ≥75% recall business requirement. *(Business Requirement 2)*
+- Implemented on **Page 4 — Model Performance**
+
+**US11** — As a business stakeholder, I want to see the project hypotheses and whether they were confirmed, so that I can trust the insights delivered by the data analysis.
+- Implemented on **Page 3 — Project Hypothesis**
+
+### Epic 5 — Dashboard Deployment and Release
+
+**US12** — As a business stakeholder, I want to access the dashboard via a public URL, so that the retention team can use it without any technical setup.
+- Deployed to Heroku via `Procfile`, `setup.sh`, `runtime.txt`, and `requirements.txt`
 
 ---
 
@@ -234,6 +288,48 @@ Addresses **Business Requirement 2** — live prediction interface.
 - The submitted customer profile is echoed back as a table before the prediction result
 - Clear result: **"This customer is likely to churn"** (error box) or **"not likely to churn"** (success box)
 - A retention recommendation is shown for at-risk customers
+
+---
+
+## Testing
+
+### Manual Testing — User Story Validation
+
+Each user story was tested manually by running the application and verifying the expected behaviour.
+
+| User Story | Feature Tested | Action | Expected Result | Actual Result |
+|---|---|---|---|---|
+| US01 | Data Collection notebook | Run all cells in `01_DataCollection.ipynb` | Dataset loaded, shape printed, raw CSV saved | ✅ Pass |
+| US02 | Data Cleaning notebook | Run all cells in `02_DataCleaning.ipynb` | TotalCharges imputed, customerID dropped, cleaned CSV saved | ✅ Pass |
+| US03 | EDA & Correlation Study page | Open dashboard, navigate to EDA page | All 7 plots displayed with interpretations, conclusion box shown | ✅ Pass |
+| US04 | Feature Engineering notebook | Run all cells in `04_FeatureEngineering.ipynb` | Transformation decisions documented, OHE and scaling justified | ✅ Pass |
+| US05 | Modelling notebook — pipeline | Run GridSearchCV cell in `05_ModellingEvaluation.ipynb` | Best pipeline found, saved to `clf_pipeline.pkl` | ✅ Pass |
+| US06 | Modelling notebook — threshold | Run threshold tuning cell | Optimal threshold found with recall ≥ 75% on validation set | ✅ Pass |
+| US07 | Project Summary page | Open dashboard, navigate to Project Summary | Dataset description, both business requirements displayed | ✅ Pass |
+| US08 | EDA page | Navigate to EDA & Correlation Study | 7 plots visible, each with written interpretation below | ✅ Pass |
+| US09 | Churn Predictor page | Fill in all inputs, click Predict | Customer profile echoed, churn prediction displayed | ✅ Pass |
+| US10 | Model Performance page | Navigate to Model Performance | Confusion matrix, classification report, BR outcome all shown | ✅ Pass |
+| US11 | Project Hypothesis page | Navigate to Project Hypothesis | All 3 hypotheses shown with statistical evidence and outcome | ✅ Pass |
+| US12 | Heroku deployment | Visit the live Heroku URL | App loads, all 5 pages accessible without errors | ✅ Pass |
+
+---
+
+### PEP8 Validation
+
+All Python source files were validated for PEP8 compliance using the [Code Institute PEP8 Linter](https://pep8ci.herokuapp.com/). No errors were found in any file.
+
+| File | Result |
+|---|---|
+| `app.py` | ✅ No errors |
+| `app_pages/multipage.py` | ✅ No errors |
+| `app_pages/page_summary.py` | ✅ No errors |
+| `app_pages/page_eda.py` | ✅ No errors |
+| `app_pages/page_hypothesis.py` | ✅ No errors |
+| `app_pages/page_model_performance.py` | ✅ No errors |
+| `app_pages/page_churn_predictor.py` | ✅ No errors |
+| `src/data_management.py` | ✅ No errors |
+| `src/machine_learning/evaluate_clf.py` | ✅ No errors |
+| `src/machine_learning/predictive_analysis.py` | ✅ No errors |
 
 ---
 

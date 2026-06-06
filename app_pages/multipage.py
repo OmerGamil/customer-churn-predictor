@@ -36,7 +36,7 @@ class MultiPage:
         self.pages.append({"title": title, "function": func})
 
     def run(self):
-        """Render the sidebar navigation and call the selected page function."""
+        """Render the sidebar and call the selected page function."""
         st.title(self.app_name)
         page = st.sidebar.radio(
             "Navigation",
