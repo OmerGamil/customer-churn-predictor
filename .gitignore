@@ -18,6 +18,9 @@ build/
 .DS_Store
 Thumbs.db
 
+# Kaggle credentials - never commit these
+kaggle.json
+
 # Streamlit
 .streamlit/secrets.toml
 
